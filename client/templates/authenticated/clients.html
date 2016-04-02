@@ -12,29 +12,47 @@
       <label for="description">Descrição: </label>
       <input type="text" class="form-control" id="description" placeholder="Descrição">
     </div>
+
+    <label for="token">Token: </label>
+    <div class="input-group">
+      <input type="text" readonly class="form-control" id="token" placeholder="Token Api" value="{{apiKey}}">
+      <div class="input-group-addon regenerate-api-key"><i class="fa fa-refresh"></i></div>
+    </div>
+
+
     <div class="form-group">
       <div class="checkbox">
         <label><input id="active" type="checkbox">Ativo</label>
       </div>
     </div>
     <div class="form-group">
-      <button class="btn btn-success">Novo Cliente</button>
+      <button class="btn btn-success">Salvar</button>
     </div>
   </form>
 
   <table class="table table-hover table-striped table-striped table-bordered table-condensed table-responsive text-center">
      <thead>
       <tr>
+         <th>#ID</th>
          <th>Nome</th>
          <th>Descrição</th>
+         <th>Token</th>
+         <th></th>
          <th>Ativo</th>
+
       </tr>
      </thead>
      <tbody>
       {{#each client in clients}}
       <tr>
+        <td>{{client._id}}</td>
         <td>{{client.name}}</td>
         <td>{{client.description}}</td>
+        <td>{{client.token}}</td>
+        <td><button class="btn btn-xs regenerate-api-key">
+              <span aria-hidden='true' class='glyphicon glyphicon-refresh'> </span>
+            </button>
+        </td>
         <td>{{client.active}}</td>
       </tr>
       {{/each}}

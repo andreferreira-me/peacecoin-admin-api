@@ -28,6 +28,10 @@ ClientSchema = new SimpleSchema({
   "active": {
     type: Boolean,
     label: "Project isActive?"
+  },
+  "token": {
+    type: String,
+    label: "Token"
   }
 });
 
