@@ -1,9 +1,9 @@
-<template name="projects">
+<template name="clients">
   <h3>Painel</h3>
   <br>
-  <h4>Projetos</h4>
+  <h4>Clientes</h4>
 
-  <form id="new-project">
+  <form id="new-client">
     <div class="form-group">
       <label for="name">Nome:</label>
       <input type="text" class="form-control" id="name" placeholder="Nome">
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button class="btn btn-success">Novo Projeto</button>
+      <button class="btn btn-success">Novo Cliente</button>
     </div>
   </form>
 
@@ -31,11 +31,11 @@
       </tr>
      </thead>
      <tbody>
-      {{#each project in projects}}
+      {{#each client in clients}}
       <tr>
-        <td>{{project.name}}</td>
-        <td>{{project.description}}</td>
-        <td>{{project.active}}</td>
+        <td>{{client.name}}</td>
+        <td>{{client.description}}</td>
+        <td>{{client.active}}</td>
       </tr>
       {{/each}}
      </tbody>

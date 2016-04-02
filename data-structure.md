@@ -21,8 +21,8 @@ Users = {
     }
 };
 
-// PeaceLabs Fake
-Projects = {
+// SmartCoin
+Clients = {
     "_id" : "",
     "ownerId" : "", // Meteor.userId()
     "createdAt" : ISODate("2016-03-27T21:20:29.125Z"),
@@ -37,14 +37,14 @@ Projects = {
     }
 };
 
-// Request all projects
-projects.find();
+// Request all clients
+clients.find();
 
-// Request projects by ownerId
-projects.find({ "ownerId" : Meteor.userId() });
+// Request clients by ownerId
+clients.find({ "ownerId" : Meteor.userId() });
 
-// Request active projects
-projects.find({ "active" : true });
+// Request active clients
+clients.find({ "active" : true });
 
 
 // Accounts from Ethereum

@@ -1,8 +1,8 @@
 Template.dashboard.helpers({
-  projects: function () {
-    return projects.find();
+  clients: function () {
+    return clients.find();
   },
-  myProjects: function () {
-    return projects.find({ ownerId : Meteor.userId()});
+  myClients: function () {
+    return clients.find({ ownerId : Meteor.userId()});
   }
 });

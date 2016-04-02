@@ -1,3 +1,3 @@
-Meteor.publish('projects', function() {
-  return projects.find({});
+Meteor.publish('clients', function() {
+  return clients.find();
 });

@@ -25,7 +25,7 @@ Template.default.helpers({
 		return handleRedirect([
 			'index',
 			'dashboard',
-			'projects'
+			'clients'
 		], '/login' );
 	}
 });
