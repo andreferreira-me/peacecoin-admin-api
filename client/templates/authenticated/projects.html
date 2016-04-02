@@ -1,0 +1,43 @@
+<template name="projects">
+  <h3>Painel</h3>
+  <br>
+  <h4>Projetos</h4>
+
+  <form id="new-project">
+    <div class="form-group">
+      <label for="name">Nome:</label>
+      <input type="text" class="form-control" id="name" placeholder="Nome">
+    </div>
+    <div class="form-group">
+      <label for="description">Descrição: </label>
+      <input type="text" class="form-control" id="description" placeholder="Descrição">
+    </div>
+    <div class="form-group">
+      <div class="checkbox">
+        <label><input id="active" type="checkbox">Ativo</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-success">Novo Projeto</button>
+    </div>
+  </form>
+
+  <table class="table table-hover table-striped table-striped table-bordered table-condensed table-responsive text-center">
+     <thead>
+      <tr>
+         <th>Nome</th>
+         <th>Descrição</th>
+         <th>Ativo</th>
+      </tr>
+     </thead>
+     <tbody>
+      {{#each project in projects}}
+      <tr>
+        <td>{{project.name}}</td>
+        <td>{{project.description}}</td>
+        <td>{{project.active}}</td>
+      </tr>
+      {{/each}}
+     </tbody>
+  </table>
+</template>
