@@ -1,7 +1,6 @@
 Meteor.methods({
 
   insertClient: function( client ) {
-    debugger
     check( client, Clients.simpleSchema() );
 
     try {
