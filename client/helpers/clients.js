@@ -1,9 +1,9 @@
 Template.clients.helpers({
   clients: function () {
-    return clients.find();
+    return Clients.find();
   },
   myClients: function () {
-    return clients.find({ ownerId : Meteor.userId()});
+    return Clients.find({ ownerId : Meteor.userId()});
   }
 });
 
@@ -19,7 +19,15 @@ Template.clients.events({
       "token": Random.hexString( 32 )
     };
 
-    clients.insert( newClient, { validate: false });
+    Meteor.call( "insertClient", newClient, function( error, response ) {
+      if ( error ) {
+        Bert.alert( error.reason, "danger" );
+      } else {
+        Bert.alert( "Cliente cadastrado com Sucesso!", "success" );
+      }
+    });
+
+    //clients.insert( newClient, { validate: false });
   },
 
   'click .regenerate-api-key': function(event){

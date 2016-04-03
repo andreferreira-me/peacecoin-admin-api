@@ -2,10 +2,10 @@ Meteor.methods({
 
   insertClient: function( client ) {
     debugger
-    check( client, Client.simpleSchema() );
-    
+    check( client, Clients.simpleSchema() );
+
     try {
-      var clientId = Client.insert( client );
+      var clientId = Clients.insert( client );
       return clientId;
     } catch( exception ) {
       return exception;
@@ -15,7 +15,7 @@ Meteor.methods({
     check( updates, Object );
 
     try {
-      Client.update( { "_id": updates._id }, {
+      Clients.update( { "_id": updates._id }, {
         $set: updates
       } );
     } catch( exception ) {
@@ -32,11 +32,10 @@ Meteor.methods({
     }
   },
   regenerateApiKey: function( clientId ){
-    debugger
     check( clientId, String );
     var newKey = Random.hexString( 32 );
     try {
-        Client.update( { "_id": clientId }, {
+        Clients.update( { "_id": clientId }, {
         $set: { "token": newKey }
       });
     } catch(exception) {

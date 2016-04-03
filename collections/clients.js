@@ -1,12 +1,12 @@
-clients = new Mongo.Collection( 'clients' );
+Clients = new Mongo.Collection( 'clients' );
 
-clients.allow({
+Clients.allow({
   insert: () => true,
   update: () => true,
   remove: () => true
 });
 
-clients.deny({
+Clients.deny({
   insert: () => false,
   update: () => false,
   remove: () => false
@@ -35,4 +35,4 @@ ClientSchema = new SimpleSchema({
   }
 });
 
-clients.attachSchema( ClientSchema );
+Clients.attachSchema( ClientSchema );
