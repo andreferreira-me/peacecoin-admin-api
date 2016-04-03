@@ -34,3 +34,14 @@ standard-minifier-css
 standard-minifier-js
 random
 http
+ethereum:web3
+frozeman:template-var
+frozeman:persistent-minimongo
+standard-minifiers
+mobile-experience
+mongo
+blaze-html-templates
+logging
+reload
+ejson
+spacebars

@@ -11,7 +11,6 @@ Template.clients.events({
   'submit #new-client'(event) {
     // Prevent default browser form submit
     event.preventDefault();
-    debugger
     var newClient = {
       "ownerId" : Meteor.userId(),
       "name": $('#name').val(),
@@ -25,7 +24,7 @@ Template.clients.events({
 
   'click .regenerate-api-key': function(event){
      event.preventDefault();
-     var clientId = "xvqgwmmwmMhPM97Ax";
+     var clientId = "yH2bn3HpFpMSBFhy6";
      var confirmRegeneration = confirm( "Você tem certeza? Isso irá invalidar sua chave atual! " );
      if ( confirmRegeneration ) {
        Meteor.call( "regenerateApiKey", clientId, function( error, response ) {
