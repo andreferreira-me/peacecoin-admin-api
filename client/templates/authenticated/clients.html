@@ -33,7 +33,6 @@
   <table class="table table-hover table-striped table-striped table-bordered table-condensed table-responsive text-center">
      <thead>
       <tr>
-         <th>#ID</th>
          <th>Nome</th>
          <th>Descrição</th>
          <th>Token</th>
@@ -45,12 +44,11 @@
      <tbody>
       {{#each client in clients}}
       <tr>
-        <td>{{client._id}}</td>
         <td>{{client.name}}</td>
         <td>{{client.description}}</td>
         <td>{{client.token}}</td>
-        <td><button class="btn btn-xs regenerate-api-key">
-              <span aria-hidden='true' class='glyphicon glyphicon-refresh'> </span>
+        <td><button class="btn btn-xs regenerate-api-key" value={{client._id}}>
+              <span aria-hidden='true' class='glyphicon glyphicon-refresh'> {{client._id}}</span>
             </button>
         </td>
         <td>{{client.active}}</td>
