@@ -39,11 +39,13 @@ ecmascript@0.4.1
 ecmascript-runtime@0.2.8
 ejson@1.0.9
 email@1.0.10
+ethereum:accounts@0.3.10
 ethereum:web3@0.15.3
 fastclick@1.0.9
 fortawesome:fontawesome@4.5.0
 fourseven:scss@3.4.1
 frozeman:persistent-minimongo@0.1.8
+frozeman:persistent-minimongo2@0.3.4
 frozeman:template-var@1.2.3
 geojson-utils@1.0.6
 hot-code-push@1.0.2

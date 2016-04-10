@@ -29,6 +29,14 @@ ClientSchema = new SimpleSchema({
     type: Boolean,
     label: "Project isActive?"
   },
+  "ethAccount": {
+    type: String,
+    label: "ETH Account Address"
+  },
+  "ethAccountBalance": {
+    type: Number,
+    label: "ETH Account Balance"
+  },
   "token": {
     type: String,
     label: "Token"

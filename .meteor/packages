@@ -45,3 +45,5 @@ logging
 reload
 ejson
 spacebars
+frozeman:persistent-minimongo2
+ethereum:accounts

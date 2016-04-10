@@ -16,6 +16,8 @@ Template.clients.events({
       "name": $('#name').val(),
       "description": $('#description').val(),
       "active": true,
+      "ethAccount": web3.personal.newAccount(),
+      "ethAccountBalance": web3.eth.getBalance(ethAccount).toString(10),
       "token": Random.hexString( 32 )
     };
 
