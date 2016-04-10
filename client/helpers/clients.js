@@ -11,13 +11,16 @@ Template.clients.events({
   'submit #new-client'(event) {
     // Prevent default browser form submit
     event.preventDefault();
+
+    var newAddress = web3.personal.newAccount();
+
     var newClient = {
       "ownerId" : Meteor.userId(),
       "name": $('#name').val(),
       "description": $('#description').val(),
       "active": true,
-      "ethAccount": web3.personal.newAccount(),
-      "ethAccountBalance": web3.eth.getBalance(ethAccount).toString(10),
+      "ethAccount": newAddress,
+      "ethAccountBalance": parseFloat(web3.eth.getBalance(newAddress).toString(10)),
       "token": Random.hexString( 32 )
     };
 

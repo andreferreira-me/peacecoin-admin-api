@@ -5,27 +5,17 @@
 
 <div class="col-md-3">
   <form id="new-client">
+    
     <div class="form-group">
       <label for="name">Nome:</label>
       <input type="text" class="form-control" id="name" placeholder="Nome">
     </div>
+
     <div class="form-group">
       <label for="description">Descrição: </label>
       <input type="text" class="form-control" id="description" placeholder="Descrição">
     </div>
 
-    <label for="token">Token: </label>
-    <div class="input-group">
-      <input type="text" readonly class="form-control" id="token" placeholder="Token Api" value="{{apiKey}}">
-      <div class="input-group-addon regenerate-api-key"><i class="fa fa-refresh"></i></div>
-    </div>
-
-
-    <div class="form-group">
-      <div class="checkbox">
-        <label><input id="active" type="checkbox">Ativo</label>
-      </div>
-    </div>
     <div class="form-group">
       <button class="btn btn-success">Salvar</button>
     </div>
@@ -36,10 +26,9 @@
       <tr>
          <th>Nome</th>
          <th>Descrição</th>
-         <th>Ethereum Account</th>
-         <th>Balance</th>
+         <th>Endereço Carteira</th>
+         <th>Saldo</th>
          <th>Token</th>
-         <th></th>
          <th>Ativo</th>
 
       </tr>
@@ -51,10 +40,10 @@
         <td>{{client.description}}</td>
         <td>{{client.ethAccount}}</td>
         <td>{{client.ethAccountBalance}}</td>
-        <td>{{client.token}}</td>
-        <td><button class="btn btn-xs regenerate-api-key" value={{client._id}}>
-              <span aria-hidden='true' class='glyphicon glyphicon-refresh'> {{client._id}}</span>
-            </button>
+        <td>{{client.token}}
+          <button class="btn btn-xs regenerate-api-key" value={{client._id}}>
+              <span aria-hidden='true' class='glyphicon glyphicon-refresh'></span>
+          </button>
         </td>
         <td>{{client.active}}</td>
       </tr>
