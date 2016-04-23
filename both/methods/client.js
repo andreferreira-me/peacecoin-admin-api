@@ -3,8 +3,20 @@ Meteor.methods({
   insertClient: function( client ) {
     check( client, Clients.simpleSchema() );
 
+    var newAddress = web3.personal.newAccount();
+
+    var newClient = {
+      "ownerId" : client.ownerId,
+      "name": client.name,
+      "description": client.description,
+      "active": client.active,
+      "ethAccount": newAddress,
+      "ethAccountBalance": parseFloat(web3.eth.getBalance(newAddress).toString(10)),
+      "token": client.token
+    };
+
     try {
-      var clientId = Clients.insert( client );
+      var clientId = Clients.insert( newClient );
       return clientId;
     } catch( exception ) {
       return exception;

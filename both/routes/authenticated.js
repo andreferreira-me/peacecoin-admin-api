@@ -22,3 +22,10 @@ authenticatedRoutes.route( '/clients', {
     BlazeLayout.render( 'default', { yield: 'clients' } );
   }
 });
+
+authenticatedRoutes.route( '/transferir-fundos', {
+  name: 'transactions',
+  action() {
+    BlazeLayout.render( 'default', { yield: 'transactions' } );
+  }
+});
