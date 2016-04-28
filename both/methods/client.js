@@ -3,7 +3,7 @@ Meteor.methods({
   insertClient: function( client ) {
     check( client, Clients.simpleSchema() );
 
-    var newAddress = web3.personal.newAccount();
+    var newAddress = web3.personal.newAccount("123456");
 
     var newClient = {
       "ownerId" : client.ownerId,

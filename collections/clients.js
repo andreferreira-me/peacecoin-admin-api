@@ -43,4 +43,5 @@ ClientSchema = new SimpleSchema({
   }
 });
 
+
 Clients.attachSchema( ClientSchema );
