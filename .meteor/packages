@@ -46,3 +46,5 @@ reload
 ejson
 spacebars
 xcv58:collection-api
+nimble:restivus
+osv:mongo-counter

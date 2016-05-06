@@ -37,9 +37,9 @@ TransactionSchema = new SimpleSchema({
     type: String,
     label: "Hash da Transação no Blockchain"
   },
-  "adminId": {
+  "clientId": {
     type: String,
-    label: "Admin que fez a transação"
+    label: "Id do cliente"
   }
 });
 

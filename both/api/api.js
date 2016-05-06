@@ -14,18 +14,29 @@ if (Meteor.isServer) {
 
   });
 
+
+  //Metododo responsavel em cadatrar projeto
+  //Retorna json com o projeto cadastrado
   Api.addRoute('project',{
     post: {
       action: function(){
         token = this.bodyParams.token;
+
         client = Clients.findOne({'token': token});
 
         if(client){
 
+          name = this.bodyParams.name;
+          description = this.bodyParams.description;
+          isActive = true;
           var project =  { "_id" : incrementCounter('countCollection', 'projectId'),
                            "clientId" : client._id,
+                           "name" : name,
+                           "description":description,
+                           "isActive": isActive,
                            "walletAddress": web3.personal.newAccount("123456") };
 
+          console.log(project);
           try {
             var projectId = Projects.insert( project );
             var prj = Projects.findOne({"_id":projectId});
@@ -36,11 +47,14 @@ if (Meteor.isServer) {
             };
           } catch( exception ) {
             return {statusCode: 404,
+                    status : "error",
                     body: 'Erro ao salvar o projeto.' + exception
-            }
+                   }
           }
         }else{
-          return {statusCode: 404,body: 'Token Inválido'};
+          return {statusCode: 404,
+                  status : "error",
+                  body: 'Token Inválido'};
         }
 
         return {};
@@ -48,35 +62,112 @@ if (Meteor.isServer) {
     }
   });
 
-  Api.addRoute('validaToken',{
+  //Metododo responsavel em vericar saldo de uma carteira.
+  //Recebe como paramentro :
+  //token -> Validar qual o cliente está realizado a solicitação.
+  //walletAddress -> Endereço da carteira que deseja consultar o saldo disponivel.
+  //Retorna o saldo disponivel da carteira.
+  Api.addRoute('balance',{
     get: {
-      action: function() {
+      action: function(){
+
 
         var token = this.queryParams.token;
         console.log(token);
 
-        client = Clients.findOne({'token': token});
-        console.log(client);
+        var client = Clients.findOne({'token': token});
+        var walletAddress = this.queryParams.walletAddress;
+
         if(client){
-          return client;
+          try {
+            var walletBalance =  { "walletAddress":walletAddress,
+                                   "balance": web3.fromWei(web3.eth.getBalance(walletAddress))
+                                 };
+
+            console.log(walletBalance);
+            return {statusCode: 200,
+                    status : "success",
+                    data: walletBalance
+            };
+          } catch( exception ) {
+            return {statusCode: 404,
+                    status : "error",
+                    body: 'Erro ao recuperar saldo.' + exception
+                  };
+          }
         }else{
-          return {};
-        }
+          return {statusCode: 404,
+                  status : "error",
+                  body: 'Token Inválido'};
+          }
+
+        return {};
       }
-    },
+    }
+  });
+
+  //Metododo responsavel em realizar tarnsferecia de fundos .
+  //Recebe como paramentro :
+  //token -> Validar qual o cliente está realizado a solicitação.
+  //walletAddressFrom->Endereço da carteira de onde irá debitar o valor.
+  //walletAddressTo->Endereço da carteira de onde irá creditar o valor
+  //-> Endereço da carteira de onde irá debitar o valor .
+  //Retorna o saldo disponivel da carteira.
+  Api.addRoute('transaction',{
     post: {
       action: function(){
         token = this.bodyParams.token;
-        console.log(token);
+        client = Clients.findOne({'token': token});
 
-        var teste = this.bodyParams.teste;
-        console.log(teste);
+        if(client){
+          try {
 
-        var name = this.bodyParams.name;
-        console.log(name);
-        return {"msg":"Deu Certo !!!"};
+            walletAddressFrom = this.bodyParams.walletAddressFrom;
+            walletAddressTo = this.bodyParams.walletAddressFrom;
+            value = this.bodyParams.value;
+
+            var ethTransaction = {
+              "from": walletAddressFrom,
+              "to": walletAddressTo,
+              "value": value
+            };
+
+            var hashTransaction = web3.eth.sendTransaction(ethTransaction);
+
+            var newTransaction = {
+              "date" : new Date(),
+              "from": walletAddressFrom,
+              "to": walletAddressTo,
+              "value": value,
+              "hash": hashTransaction,
+              "token": token,
+              "clientId": client._id
+            };
+
+            var transactionId = Transactions.insert( newTransaction );
+
+            console.log(newTransaction);
+
+            var ethTransaction = web3.eth.getTransaction(hashTransaction);
+
+            return {statusCode: 200,
+                    status : "success",
+                    data: ethTransaction
+            };
+          } catch( exception ) {
+            return {statusCode: 404,
+                    status : "error",
+                    body: 'Erro realizar transferecia de fundos.' + exception
+                  };
+          }
+        }else{
+          return {statusCode: 404,
+                  status : "error",
+                  body: 'Token Inválido'};
+          }
+
+        return {};
       }
     }
-
   });
 }

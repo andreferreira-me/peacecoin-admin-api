@@ -17,10 +17,25 @@ ProjectSchema = new SimpleSchema({
     type:  String,
     label: "ID"
   },
-  
+
   "clientId": {
     type: String,
     label: "Client ID"
+  },
+
+  "name": {
+    type: String,
+    label: "Nome do Projeto"
+  },
+
+  "description": {
+    type: String,
+    label: "Descricão do Projeto"
+  },
+
+  "isActive":{
+    type: Boolean,
+    label: "Projeto Ativo"
   },
 
   "walletAddress": {
