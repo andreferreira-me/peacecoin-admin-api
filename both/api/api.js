@@ -70,13 +70,13 @@ if (Meteor.isServer) {
   Api.addRoute('balance',{
     get: {
       action: function(){
-
-
         var token = this.queryParams.token;
-        console.log(token);
-
         var client = Clients.findOne({'token': token});
         var walletAddress = this.queryParams.walletAddress;
+
+        Logger.info("Inicio Consulta Saldo Carteira");
+        Logger.info("Cliente - " - client.name );
+        Logger.info("Wallet - " -  walletAddress);
 
         if(client){
           try {
@@ -84,18 +84,21 @@ if (Meteor.isServer) {
                                    "balance": web3.fromWei(web3.eth.getBalance(walletAddress))
                                  };
 
-            console.log(walletBalance);
+            Logger.info("Saldo - " -  walletBalance);
             return {statusCode: 200,
                     status : "success",
                     data: walletBalance
             };
           } catch( exception ) {
+
+            Logger.log("Erro ao recuperar saldo." + exception);
             return {statusCode: 404,
                     status : "error",
                     body: 'Erro ao recuperar saldo.' + exception
                   };
           }
         }else{
+          Logger.log("Token Invalido");
           return {statusCode: 404,
                   status : "error",
                   body: 'Token Inválido'};
