@@ -1,3 +1,5 @@
-Template.index.onCreated( () => {
-  Template.instance().subscribe( 'template' );
+Template.index.onCreated( function() {
+  this.subscribe( 'transactions', function() {
+    console.log( "transactions data ready.");
+  })
 });

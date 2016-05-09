@@ -1,3 +1,4 @@
+3stack:bignumber@2.0.0
 accounts-base@1.2.7
 accounts-password@1.1.8
 aldeed:collection2@2.9.1
@@ -39,11 +40,13 @@ ecmascript@0.4.3
 ecmascript-runtime@0.2.10
 ejson@1.0.11
 email@1.0.12
+ethereum:tools@0.5.2
 ethereum:web3@0.15.3
 fastclick@1.0.11
 fortawesome:fontawesome@4.5.0
 fourseven:scss@3.4.3
 frozeman:persistent-minimongo@0.1.8
+frozeman:storage@0.1.9
 frozeman:template-var@1.2.3
 geojson-utils@1.0.8
 hot-code-push@1.0.4

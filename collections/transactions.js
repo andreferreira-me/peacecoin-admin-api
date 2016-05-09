@@ -27,7 +27,8 @@ TransactionSchema = new SimpleSchema({
   },
   "value": {
     type: Number,
-    label: "Valor transferido"
+    label: "Valor transferido",
+    decimal:true
   },
   "token": {
     type: String,

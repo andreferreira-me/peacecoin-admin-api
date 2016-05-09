@@ -3,6 +3,9 @@ Meteor.methods({
   insertClient: function( client ) {
     check( client, Clients.simpleSchema() );
 
+    if(typeof web3 === 'undefined')
+      web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+
     var newAddress = web3.personal.newAccount("123456");
 
     var newClient = {
