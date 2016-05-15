@@ -17,6 +17,7 @@ if (Meteor.isServer) {
 
   //Metododo responsavel em cadatrar projeto
   //Retorna json com o projeto cadastrado
+  
   Api.addRoute('project',{
     post: {
       action: function(){

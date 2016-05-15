@@ -9,13 +9,6 @@ authenticatedRoutes.route( '/', {
   }
 });
 
-authenticatedRoutes.route( '/dashboard', {
-  name: 'dashboard',
-  action() {
-    BlazeLayout.render( 'default', { yield: 'dashboard' } );
-  }
-});
-
 authenticatedRoutes.route( '/clients', {
   name: 'clients',
   action() {
@@ -27,5 +20,12 @@ authenticatedRoutes.route( '/transferir-fundos', {
   name: 'transactions',
   action() {
     BlazeLayout.render( 'default', { yield: 'transactions' } );
+  }
+});
+
+authenticatedRoutes.route( '/report', {
+  name: 'report',
+  action() {
+    BlazeLayout.render( 'default', { yield: 'report' } );
   }
 });

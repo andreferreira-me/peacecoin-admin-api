@@ -38,6 +38,4 @@ CollaboratorSchema = new SimpleSchema({
     type: String,
     label: "Collaborator Wallet Address"
   }});
-
-
 Collaborators.attachSchema( CollaboratorSchema );
