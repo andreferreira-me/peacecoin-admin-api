@@ -52,3 +52,4 @@ ethereum:tools
 peppelg:mongo-sum
 rajit:bootstrap3-datepicker-pt-br
 perak:joins
+momentjs:moment

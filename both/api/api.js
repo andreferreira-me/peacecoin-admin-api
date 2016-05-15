@@ -17,7 +17,7 @@ if (Meteor.isServer) {
 
   //Metododo responsavel em cadatrar projeto
   //Retorna json com o projeto cadastrado
-  
+
   Api.addRoute('project',{
     post: {
       action: function(){
@@ -33,9 +33,11 @@ if (Meteor.isServer) {
 
           name = this.bodyParams.name;
           description = this.bodyParams.description;
+          projectIdCli = this.bodyParams.projectId;
           isActive = true;
           var project =  { "_id" : incrementCounter('countCollection', 'projectId'),
                            "clientId" : client._id,
+                           "projectId": projectIdCli,
                            "name" : name,
                            "description":description,
                            "isActive": isActive,

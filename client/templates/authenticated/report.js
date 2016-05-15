@@ -9,7 +9,6 @@ Template.report.rendered=function() {
 
 Template.report.onCreated( function() {
   this.subscribe( 'transactions', function() {
-
     console.log( "Transactions data ready.");
   });
 
@@ -17,5 +16,5 @@ Template.report.onCreated( function() {
     console.log( "Clients data ready.");
   });
 
-  
+
 });
