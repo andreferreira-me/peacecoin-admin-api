@@ -19,6 +19,72 @@ if (Meteor.isServer) {
   //Retorna json com o projeto cadastrado
 
   Api.addRoute('project',{
+    get :{
+        action: function(){
+          if(typeof web3 === 'undefined')
+            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+
+            var token = this.queryParams.token;
+            var client = Clients.findOne({'token': token});
+            var userId = this.queryParams.userId;
+
+            console.log("Inicio Consulta Saldo de Projetos");
+
+            if(client){
+              try {
+
+                let projectUser = Projects.find({userId : userId});
+
+                console.log("Total de Carteiras -> " +  Projects.find({userId : userId}).count())
+
+                var sumBalance = 0.0;
+
+                projectUser.forEach(function(prj){
+
+                  console.log("------------------------------------------");
+                  console.log("Carteira do Projeto -> " + prj.walletAddress);
+
+                  var balance = web3.eth.getBalance(prj.walletAddress);
+
+                  console.log("Saldo da Carteira do Projeto -> " + balance);
+                  sumBalance = sumBalance + balance;
+
+                });
+
+                console.log("Sum Balance - " + sumBalance );
+                console.log("Cliente - " + client.name );
+                console.log("userId - " + userId);
+
+                var walletBalance =  { "userId":userId,
+                                       "balance": EthTools.formatBalance(sumBalance, '0,0.0[00] unit', 'ether'),
+                                       "usd" : EthTools.formatBalance(sumBalance, '0,0.0[00] unit', 'usd'),
+                                       "btc" :EthTools.formatBalance(sumBalance, '0,0.0[00] unit', 'btc')
+                                     };
+
+                console.log("Saldo Projeto - " +  walletBalance.balance);
+                return {statusCode: 200,
+                        status : "success",
+                        data: walletBalance
+                };
+              } catch( exception ) {
+
+                console.log("Erro ao recuperar saldo." + exception);
+                return {statusCode: 404,
+                        status : "error",
+                        body: 'Erro ao recuperar saldo.' + exception
+                      };
+              }
+            }else{
+              console.log("Token Invalido");
+              return {statusCode: 404,
+                      status : "error",
+                      body: 'Token Inválido'};
+            }
+
+            return {};
+        }
+    },
+
     post: {
       action: function(){
 
@@ -30,38 +96,44 @@ if (Meteor.isServer) {
         client = Clients.findOne({'token': token});
 
         if(client){
+            name = this.bodyParams.name;
+            description = this.bodyParams.description;
+            projectIdCli = this.bodyParams.projectId;
+            userId = this.bodyParams.userId;
+            isActive = true;
 
-          name = this.bodyParams.name;
-          description = this.bodyParams.description;
-          projectIdCli = this.bodyParams.projectId;
-          isActive = true;
-          var project =  { "_id" : incrementCounter('countCollection', 'projectId'),
-                           "clientId" : client._id,
-                           "projectId": projectIdCli,
-                           "name" : name,
-                           "description":description,
-                           "isActive": isActive,
-                           "walletAddress": web3.personal.newAccount("123456") };
+            if(Projects.find({projectId:projectIdCli}).count() <= 0){
+                var project =  { "_id" : incrementCounter('countCollection', 'projectId'),
+                                 "clientId" : client._id,
+                                 "projectId": projectIdCli,
+                                 "userId": userId,
+                                 "name" : name,
+                                 "description":description,
+                                 "isActive": isActive,
+                                 "walletAddress": web3.personal.newAccount("123456") };
 
-          console.log(project);
-          try {
-            var projectId = Projects.insert( project );
-            var prj = Projects.findOne({"_id":projectId});
-            console.log(prj);
-            return {statusCode: 200,
-                    status : "success",
-                    data: prj
-            };
-          } catch( exception ) {
+                console.log(project);
+                try {
+                    var projectId = Projects.insert( project );
+                    var prj = Projects.findOne({"_id":projectId});
+                    console.log(prj);
+                    return {statusCode: 200,
+                            status : "success",
+                            data: prj };
+                }catch( exception ) {
+                    return {statusCode: 404,
+                            status : "error",
+                            body: 'Erro ao salvar o projeto.' + exception };
+                }
+            }else{
+                return {statusCode: 404,
+                        status : "error",
+                        body: 'Id do Projeto já foi salvo'};
+            }
+        }else{
             return {statusCode: 404,
                     status : "error",
-                    body: 'Erro ao salvar o projeto.' + exception
-                   }
-          }
-        }else{
-          return {statusCode: 404,
-                  status : "error",
-                  body: 'Token Inválido'};
+                    body: 'Token Inválido'};
         }
 
         return {};

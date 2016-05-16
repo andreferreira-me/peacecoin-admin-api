@@ -28,6 +28,12 @@ ProjectSchema = new SimpleSchema({
     label: "Project ID"
   },
 
+  "userId": {
+    type: String,
+    label: "User ID"
+  },
+
+
   "name": {
     type: String,
     label: "Nome do Projeto"
