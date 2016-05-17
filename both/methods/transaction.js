@@ -20,7 +20,7 @@ Meteor.methods({
         "value": transaction.value,
         "hash": hashTransaction,
         "token": transaction.token,
-        "adminId": transaction.adminId
+        "clientId": transaction.clientId
       };
 
       var transactionId = Transactions.insert( newTransaction );

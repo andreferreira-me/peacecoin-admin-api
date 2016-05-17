@@ -223,6 +223,16 @@ if (Meteor.isServer) {
             walletAddressTo = this.bodyParams.walletAddressTo;
             value = this.bodyParams.value;
 
+            //valida se existe saldo para transferencia
+            var balance = web3.eth.getBalance(walletAddress);
+
+            if(balance < value ){
+              return {statusCode: 404,
+                      status : "error",
+                      body: 'Saldo insuficiente.'
+                    };
+            }
+
             var ethTransaction = {
               "from": walletAddressFrom,
               "to": walletAddressTo,

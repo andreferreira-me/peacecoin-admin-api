@@ -17,7 +17,7 @@ Template.transactions.events({
       "value": parseFloat($('#value').val()),
       "hash": '',
       "token": '0c9393a5b58590803de5ea540e113a48',
-      "adminId": Meteor.userId()
+      "clientId": Meteor.userId()
     };
 
     Meteor.call( "insertTransaction", newTransaction, function( error, response ) {
