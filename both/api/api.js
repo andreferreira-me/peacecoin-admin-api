@@ -88,21 +88,28 @@ if (Meteor.isServer) {
     post: {
       action: function(){
 
+        //verifica se o objeto web3 está instaciado,
+        //Se não instacia passando como paramentro o servidor que esta rodadno o ethereum
         if(typeof web3 === 'undefined')
           web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
+        //Recupera o Token passado como paramentro na chamado do serviço
         token = this.bodyParams.token;
-
+        //Busca o cliente que tenha o token cadastrado
         client = Clients.findOne({'token': token});
-
+        //Se existir o cliente continua  na criação do projeto. Caso contrario retorna erro 404, token invalido
         if(client){
+            //Recupera os pararamentro para criação do projeto
             name = this.bodyParams.name;
             description = this.bodyParams.description;
             projectIdCli = this.bodyParams.projectId;
             userId = this.bodyParams.userId;
             isActive = true;
 
+            //Verifica se o projeto já foi cadastrado com o mesmo ID. Se sim retorna erro 404. Projeto já cadastrado.
             if(Projects.find({projectId:projectIdCli}).count() <= 0){
+
+                //Monta o objeto Json para salvar no mongoDb
                 var project =  { "_id" : incrementCounter('countCollection', 'projectId'),
                                  "clientId" : client._id,
                                  "projectId": projectIdCli,
@@ -110,22 +117,28 @@ if (Meteor.isServer) {
                                  "name" : name,
                                  "description":description,
                                  "isActive": isActive,
+                                 //Cria a carteira do projeto chamando o serviço do ethereum
                                  "walletAddress": web3.personal.newAccount("123456") };
 
                 console.log(project);
                 try {
+                    //Insere o projeto no MongoDb
                     var projectId = Projects.insert( project );
+                    //Busca o projeto inserido para devolver como retorno da metodo.
                     var prj = Projects.findOne({"_id":projectId});
                     console.log(prj);
+                    //Retorna 200 Sucesso e projeto cadastrado com a carteira do projeto no formato json
                     return {statusCode: 200,
                             status : "success",
                             data: prj };
                 }catch( exception ) {
+                    //Se der alguma exceção quando for inserir o projeto, retorna 404 Erro e a execeção no formato json
                     return {statusCode: 404,
                             status : "error",
                             body: 'Erro ao salvar o projeto.' + exception };
                 }
             }else{
+
                 return {statusCode: 404,
                         status : "error",
                         body: 'Id do Projeto já foi salvo'};
@@ -150,23 +163,29 @@ if (Meteor.isServer) {
     get: {
       action: function(){
 
+        //verifica se o objeto web3 está instaciado,
+        //Se não instacia passando como paramentro o servidor que esta rodadno o ethereum
         if(typeof web3 === 'undefined')
           web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
+        //Recupera o Token passado como paramentro na chamado do serviço
         var token = this.queryParams.token;
+        //Busca o cliente que tenha o token cadastrado
         var client = Clients.findOne({'token': token});
         var walletAddress = this.queryParams.walletAddress;
 
         console.log("Inicio Consulta Saldo Carteira");
-
+        //Se existir o cliente continua  na consulta de saldo. Caso contrario retorna erro 404, token invalido
         if(client){
           try {
 
             console.log("Cliente - " + client.name );
             console.log("Wallet - " +  walletAddress);
 
+            //Chama o serviço do ethereum que consulta o saldo carteira.
             var balance = web3.eth.getBalance(walletAddress);
-
+            
+            //Monta o objeto Json para retornar o saldo da carteira
             var walletBalance =  { "walletAddress":walletAddress,
                                    "balance": EthTools.formatBalance(balance, '0,0.0[00] unit', 'ether'),
                                    "usd" : EthTools.formatBalance(balance, '0,0.0[00] unit', 'usd'),
@@ -209,10 +228,14 @@ if (Meteor.isServer) {
     post: {
       action: function(){
 
+        //verifica se o objeto web3 está instaciado,
+        //Se não instacia passando como paramentro o servidor que esta rodadno o ethereum
         if(typeof web3 === 'undefined')
           web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
+        //Recupera o Token passado como paramentro na chamado do serviço
         token = this.bodyParams.token;
+        //Se existir o cliente continua na transferencia de fundos. Caso contrario retorna erro 404, token invalido
         client = Clients.findOne({'token': token});
 
         if(client){
@@ -224,7 +247,8 @@ if (Meteor.isServer) {
             value = this.bodyParams.value;
 
             //valida se existe saldo para transferencia
-            var balance = web3.eth.getBalance(walletAddress);
+            var balance = web3.eth.getBalance(walletAddressFrom);
+            console.log(balance);
 
             if(balance < value ){
               return {statusCode: 404,
@@ -232,6 +256,9 @@ if (Meteor.isServer) {
                       body: 'Saldo insuficiente.'
                     };
             }
+
+
+            console.log("Conta desbloqueada ? " + web3.personal.unlockAccount(walletAddressFrom, "123456"));
 
             var ethTransaction = {
               "from": walletAddressFrom,
@@ -289,13 +316,18 @@ if (Meteor.isServer) {
     post: {
       action: function(){
 
-        console.log("Cadstro de Colaborador");
+        console.log("Cadastro de Colaborador");
+
+        //verifica se o objeto web3 está instaciado,
+        //Se não instacia passando como paramentro o servidor que esta rodadno o ethereum
         if(typeof web3 === 'undefined')
           web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
+        //Recupera o Token passado como paramentro na chamado do serviço
         token = this.bodyParams.token;
+        //Busca o cliente que tenha o token cadastrado
         client = Clients.findOne({'token': token});
-
+        //Se exisitir o cliente continua  na criação do colaborador. Caso contrario retorna erro 404, token invalido
         if(client){
           name = this.bodyParams.name;
           cpf = this.bodyParams.cpf;
@@ -308,6 +340,8 @@ if (Meteor.isServer) {
                            "cpf":cpf,
                            "active":isActive,
                            "walletAddress": web3.personal.newAccount("123456") };
+
+          console.log("Conta desbloqueada ? " + web3.personal.unlockAccount(collaborator.walletAddress, "123456"));
 
           console.log(collaborator);
           try {
