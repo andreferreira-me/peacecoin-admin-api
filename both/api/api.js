@@ -41,11 +41,9 @@ if (Meteor.isServer) {
 
                 projectUser.forEach(function(prj){
 
-                  console.log("------------------------------------------");
                   console.log("Carteira do Projeto -> " + prj.walletAddress);
-
-                  var balance = web3.eth.getBalance(prj.walletAddress);
-
+                  //var balance = web3.eth.getBalance(prj.walletAddress);
+                  var balance = parseFloat(web3.eth.getBalance(prj.walletAddress));
                   console.log("Saldo da Carteira do Projeto -> " + balance);
                   sumBalance = sumBalance + balance;
 
@@ -57,8 +55,8 @@ if (Meteor.isServer) {
 
                 var walletBalance =  { "userId":userId,
                                        "balance": EthTools.formatBalance(sumBalance, '0,0.0[00] unit', 'ether'),
-                                       "usd" : EthTools.formatBalance(sumBalance, '0,0.0[00] unit', 'usd'),
-                                       "btc" :EthTools.formatBalance(sumBalance, '0,0.0[00] unit', 'btc')
+                                       "usd" : EthTools.formatBalance(sumBalance.toString(), '0,0.0[00] unit', 'usd'),
+                                       "btc" :EthTools.formatBalance(sumBalance.toString(), '0,0.0[00] unit', 'btc')
                                      };
 
                 console.log("Saldo Projeto - " +  walletBalance.balance);
@@ -107,7 +105,7 @@ if (Meteor.isServer) {
             isActive = true;
 
             //Verifica se o projeto já foi cadastrado com o mesmo ID. Se sim retorna erro 404. Projeto já cadastrado.
-            if(Projects.find({projectId:projectIdCli}).count() <= 0){
+            //if(Projects.find({'projectId':projectIdCli}).count() <= 0){
 
                 //Monta o objeto Json para salvar no mongoDb
                 var project =  { "_id" : incrementCounter('countCollection', 'projectId'),
@@ -137,12 +135,12 @@ if (Meteor.isServer) {
                             status : "error",
                             body: 'Erro ao salvar o projeto.' + exception };
                 }
-            }else{
+            //}else{
 
-                return {statusCode: 404,
-                        status : "error",
-                        body: 'Id do Projeto já foi salvo'};
-            }
+            //    return {statusCode: 404,
+            //            status : "error",
+            //            body: 'Id do Projeto já foi salvo'};
+            //}
         }else{
             return {statusCode: 404,
                     status : "error",
@@ -184,7 +182,7 @@ if (Meteor.isServer) {
 
             //Chama o serviço do ethereum que consulta o saldo carteira.
             var balance = web3.eth.getBalance(walletAddress);
-            
+
             //Monta o objeto Json para retornar o saldo da carteira
             var walletBalance =  { "walletAddress":walletAddress,
                                    "balance": EthTools.formatBalance(balance, '0,0.0[00] unit', 'ether'),
@@ -241,11 +239,11 @@ if (Meteor.isServer) {
         if(client){
           try {
 
+            console.log("*********************************************************************")
             console.log("Transferencia de Fundos");
             walletAddressFrom = this.bodyParams.walletAddressFrom;
             walletAddressTo = this.bodyParams.walletAddressTo;
             value = this.bodyParams.value;
-
             //valida se existe saldo para transferencia
             var balance = web3.eth.getBalance(walletAddressFrom);
             console.log(balance);
@@ -288,18 +286,20 @@ if (Meteor.isServer) {
 
             console.log("Transferencia de Fundos - " );
             console.log(ethTransaction);
-
+            console.log("*********************************************************************")
             return {statusCode: 200,
                     status : "success",
                     data: ethTransaction
             };
           } catch( exception ) {
+            console.log("*********************************************************************")
             return {statusCode: 404,
                     status : "error",
                     body: 'Erro realizar transferecia de fundos.' + exception
                   };
           }
         }else{
+          console.log("*********************************************************************")
           return {statusCode: 404,
                   status : "error",
                   body: 'Token Inválido'};
